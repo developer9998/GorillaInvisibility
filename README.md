@@ -11,7 +11,7 @@
 
 👻 The player is made invisible by hiding their fur, face, chest tag, and particles from any perspective, but only from the player's point of view, meaning other players will not see them as invisible. 
 
-🎉 The player will continue to be invisible when the initial condition is broken, either the mod has been disabled, or the player has left their modded room they were in.
+🎉 The player will continue to be invisible until the initial condition is broken, either the mod has been disabled, or the player has left their modded room they were in.
 
 ## Installation
 📂 To download **GorillaInvisibility**, you need to have [MonkeModManager](https://github.com/BzzzThe18th/MonkeModManager/releases/latest) installed. When opened, click on 'Install / Update'.
