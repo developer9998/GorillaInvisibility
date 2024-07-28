@@ -5,27 +5,24 @@ namespace GorillaInvisibility.Patches
     [HarmonyPatch(typeof(VRRig), "LateUpdate")]
     public class PlayerUpdatePatch
     {
-        private static bool _isHidden;
-
-        public static void Prefix(VRRig __instance)
-        {
-            if (__instance.isOfflineVRRig)
-            {
-                _isHidden = __instance.IsPlayerMeshHidden;
-            }
-        }
-
         public static void Postfix(VRRig __instance)
         {
-            if (__instance.isOfflineVRRig)
+            if (__instance.isOfflineVRRig && Plugin.Instance)
             {
-                bool canChangeHiddenState = !NetworkSystem.Instance.InRoom || Plugin.IsAllowed || (!Plugin.IsAllowed && _isHidden);
+                bool canChangeHiddenState = !NetworkSystem.Instance.InRoom || Plugin.IsAllowed;
 
-                bool shouldPlayerHide = NetworkSystem.Instance.InRoom && Plugin.IsAllowed;
+                bool isHiddenAllowed = canChangeHiddenState && __instance.mainSkin.enabled == Plugin.IsAllowed;
 
-                if (!canChangeHiddenState || __instance.IsPlayerMeshHidden == shouldPlayerHide) return;
+                if (isHiddenAllowed)
+                {
+                    __instance.SetPlayerMeshHidden(Plugin.IsAllowed);
+                    return;
+                }
 
-                __instance.SetPlayerMeshHidden(shouldPlayerHide);
+                if (!Plugin.IsAllowed && __instance.mainSkin.enabled && !__instance.faceSkin.enabled)
+                {
+                    __instance.SetPlayerMeshHidden(false);
+                }
             }
         }
     }
